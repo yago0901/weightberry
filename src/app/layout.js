@@ -1,13 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import styles from "../app/page.module.css";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
 });
 
@@ -18,9 +15,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="pl">
+      <body className={`${montserrat.variable} `}>
         {children}
+        <footer className={styles.footer}>
+          <div className={styles.container}>
+            <p>&copy; 2025 - Dev Assina - Todos os direitos reservados.</p>
+          </div>
+          <div>
+            <a href="https://land1.abxyz.info/policy_gdpr/-7EBRQCgQAAAEBAzqWA0ioNyWIAfoHAAMPpX7VZxERChEJIhENQhENWgdubDIAAH9hZGNvbWJv_zduanRGdGpuAANlOA">
+              Privacy policy
+            </a>
+            <a href="https://ac-feedback.com/report_form/">report</a>
+          </div>
+        </footer>
       </body>
     </html>
   );
