@@ -1,6 +1,7 @@
 "use client";
-import { useState } from 'react';
+import { useState } from "react";
 import styles from "../../app/page.module.css";
+import formatPolishPhone from "../../utils/validationPhone";
 
 const Form = () => {
   const [formData, setFormData] = useState({ name: "", phone: "" });
@@ -18,16 +19,34 @@ const Form = () => {
       return;
     }
 
-    try {
-      const url = `/api/forms?name=${encodeURIComponent(formData.name)}&phone=${encodeURIComponent(formData.phone)}`;
+    if (formData.name.length < 4) {
+      alert("O nome deve ter pelo menos 4 letras");
+      return;
+    }
 
-      const res = await fetch(url, { method: "GET" });
+    const formattedPhone = formatPolishPhone(formData.phone);
+
+    if (!formattedPhone) {
+      alert("Número de telefone inválido. Use um número polonês válido.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/forms", {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: formData.name, phone: formData.phone }),
+      });
+
       const data = await res.json();
 
       setResponseMessage(data.message || data.error);
 
       if (res.ok) {
         alert("Pedido enviado com sucesso!");
+        console.log(data);
         setFormData({ name: "", phone: "" });
       } else {
         alert(`Erro: ${data.error}`);
@@ -37,7 +56,6 @@ const Form = () => {
     }
   };
 
-  
   return (
     <section className={styles.faqForm}>
       <div className={styles.container}>
@@ -65,20 +83,20 @@ const Form = () => {
               <h2>ZŁOŻENIE ZAMÓWIENIA</h2>
 
               <input
-                className="input"
+                className={styles.input}
                 type="text"
                 name="name"
                 placeholder="Imię"
-                value={formData.name} 
+                value={formData.name}
                 onChange={handleChange}
                 required
               />
               <input
-                className="input"
+                className={styles.input}
                 type="tel"
                 name="phone"
                 placeholder="Telefon"
-                value={formData.phone} 
+                value={formData.phone}
                 onChange={handleChange}
                 required
               />
