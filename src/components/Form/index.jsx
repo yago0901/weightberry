@@ -20,14 +20,14 @@ const Form = () => {
     }
 
     if (formData.name.length < 4) {
-      alert("O nome deve ter pelo menos 4 letras");
+      alert("Nazwa musi składać się z co najmniej 4 liter");
       return;
     }
 
     const formattedPhone = formatPolishPhone(formData.phone);
 
     if (!formattedPhone) {
-      alert("Número de telefone inválido. Use um número polonês válido.");
+      alert("Nieprawidłowy numer telefonu, wymagane 9 cyfr.");
       return;
     }
 
@@ -46,13 +46,12 @@ const Form = () => {
 
       if (res.ok) {
         alert("Pedido enviado com sucesso!");
-        console.log(data);
         setFormData({ name: "", phone: "" });
       } else {
         alert(`Erro: ${data.error}`);
       }
     } catch (error) {
-      alert("Erro ao enviar pedido. Tente novamente.");
+      alert("Błąd wysyłania zamówienia. Spróbuj ponownie.");
     }
   };
 
